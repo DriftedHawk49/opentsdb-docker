@@ -22,6 +22,15 @@ then
     cp /opt/hbase/conf/hbase-site.xml.sample /opt/hbase/conf/hbase-site.xml
 fi
 
+if [[ -z "$BASIC_AUTH_USER" ]] || [[ -z "$BASIC_AUTH_KEY" ]]; then 
+echo "AUTHENTICATION ENVIRONMENT VARIABLES ARE NOT PRESENT, ABORTING"
+exit 1
+fi
+
+# create a password file from environment variables
+htpasswd -bc /etc/nginx/.htpasswd "$BASIC_AUTH_USER" "$BASIC_AUTH_KEY"
+# start nginx as a background process
+nginx
 
 WAITSECS=${WAITSECS:-15}
 echo "starting hbase and sleeping ${WAITSECS} seconds for hbase to come online"
