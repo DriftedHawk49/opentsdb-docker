@@ -1,7 +1,7 @@
 FROM alpine:latest
 
 ENV TINI_VERSION v0.18.0
-ENV TSDB_VERSION 2.4.1
+ENV TSDB_VERSION 2.4.0
 ENV HBASE_VERSION 1.4.4
 ENV GNUPLOT_VERSION 5.2.4
 ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk
@@ -28,7 +28,7 @@ WORKDIR /opt/opentsdb/
 # Add build deps, build opentsdb, and clean up afterwards.
 RUN set -ex && apk add --virtual builddeps ${BUILD_PACKAGES}
 
-RUN ln -s /usr/bin/python3 /usr/bin/python
+RUN ln -sf /usr/bin/python3 /usr/bin/python
 
 RUN wget --no-check-certificate \
     -O v${TSDB_VERSION}.zip \

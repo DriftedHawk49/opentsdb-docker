@@ -1,7 +1,9 @@
+VERSION ?= 1.0.0
+
 all: build
 
 build:
-	docker build -t petergrace/opentsdb-docker .
+	docker build -t driftedhawk49/opentsdb-docker-auth:$(VERSION) .
 
 gh-build: HASH=$(shell git rev-parse --short HEAD)
 gh-build:
