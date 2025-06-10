@@ -1,12 +1,12 @@
 FROM alpine:latest
 
 ENV TINI_VERSION v0.18.0
-ENV TSDB_VERSION 2.4.1
+ENV TSDB_VERSION 2.4.0
 ENV HBASE_VERSION 1.4.4
 ENV GNUPLOT_VERSION 5.2.4
 ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk
 ENV PATH $PATH:/usr/lib/jvm/java-1.8-openjdk/bin/
-ENV ALPINE_PACKAGES "rsyslog bash openjdk8 make wget libgd libpng libjpeg libwebp libjpeg-turbo cairo pango lua"
+ENV ALPINE_PACKAGES "rsyslog bash openjdk8 make wget libgd libpng libjpeg libwebp libjpeg-turbo cairo pango lua nginx apache2-utils"
 ENV BUILD_PACKAGES "build-base autoconf automake git python3-dev cairo-dev pango-dev gd-dev lua-dev readline-dev libpng-dev libjpeg-turbo-dev libwebp-dev sed"
 ENV HBASE_OPTS "-XX:+UseConcMarkSweepGC -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
 ENV JVMARGS "-XX:+UseConcMarkSweepGC -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -enableassertions -enablesystemassertions"
@@ -28,7 +28,7 @@ WORKDIR /opt/opentsdb/
 # Add build deps, build opentsdb, and clean up afterwards.
 RUN set -ex && apk add --virtual builddeps ${BUILD_PACKAGES}
 
-RUN ln -s /usr/bin/python3 /usr/bin/python
+RUN ln -sf /usr/bin/python3 /usr/bin/python
 
 RUN wget --no-check-certificate \
     -O v${TSDB_VERSION}.zip \
@@ -78,6 +78,7 @@ ADD files/start_opentsdb.sh /opt/bin/
 ADD files/create_tsdb_tables.sh /opt/bin/
 ADD files/start_hbase.sh /opt/bin/
 ADD files/entrypoint.sh /entrypoint.sh
+ADD files/nginx.conf /etc/nginx/nginx.conf
 
 # Fix ENV variables in installed scripts
 RUN for i in /opt/bin/start_hbase.sh /opt/bin/start_opentsdb.sh /opt/bin/create_tsdb_tables.sh; \
