@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 
-namespace: default
+namespace: opentsdb-namespace
 
 image:
   repository: driftedhawk49/opentsdb-docker
@@ -18,8 +18,11 @@ service:
 livenessProbe:
   httpGet:
     path: /version
-    port: http
+    port: 4242
 readinessProbe:
   httpGet:
     path: /version
-    port: http
+    port: 4242
+env:
+  BASIC_AUTH_USER: admin
+  BASIC_AUTH_KEY: admin123 

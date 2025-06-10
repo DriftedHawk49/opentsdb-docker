@@ -2,11 +2,15 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: {{ .Values.namespace }}
-  name: {{ include "opentsdb-auth.fullname" . }}
+  name: opentsdb
+  labels:
+    app: opentsdb
 spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: http
+      targetPort: {{.Values.service.port}}
       protocol: TCP
       name: http
+  selector:
+    app: opentsdb

@@ -1,15 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: {{ .Values.namespace }}
+  labels:
+    app: opentsdb
   name: opentsdb
+  namespace: {{ .Values.namespace }}
 spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: opentsdb
+
   template:
-    spec:
+    metadata:
+      labels:
+        app: opentsdb
+    spec:  
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: BASIC_AUTH_KEY
+              value: {{.Values.env.BASIC_AUTH_KEY}}
+            - name: BASIC_AUTH_USER
+              value: {{.Values.env.BASIC_AUTH_USER}}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
