@@ -1,0 +1,25 @@
+# Default values for opentsdb-auth.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+
+namespace: default
+
+image:
+  repository: driftedhawk49/opentsdb-docker
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+service:
+  type: NodePort
+  port: 80
+
+livenessProbe:
+  httpGet:
+    path: /version
+    port: http
+readinessProbe:
+  httpGet:
+    path: /version
+    port: http
