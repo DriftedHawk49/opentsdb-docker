@@ -1,12 +1,10 @@
 version: '3'
 services:
   opentsdb:
-    image: driftedhawk49/opentsdb-docker-auth:1.0.2 #petergrace/opentsdb-docker #opentsdb/opentsdb:3.0.90-SNAPSHOT-jdk17
+    image: driftedhawk49/opentsdb-docker:latest
     container_name: opentimeseriesdb
     environment:
       BASIC_AUTH_USER: admin
       BASIC_AUTH_KEY: admin123 
-    #volumes:
-            #- "/opt/aricent/ec/opentsdb/conf/opentsdb.conf:/etc/opentsdb/opentsdb.conf"
     ports:
       - "31005:80"
