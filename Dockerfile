@@ -90,7 +90,10 @@ RUN echo "export HBASE_OPTS=\"${HBASE_OPTS}\"" >> /opt/hbase/conf/hbase-env.sh
 
 
 #4242 is tsdb, rest are hbase ports
-EXPOSE 60000 60010 60030 4242 16010 16070
+#EXPOSE 60000 60010 60030 4242 16010 16070
+
+# we don't need to expose any other ports, as we will not be accessing them. only port 80
+EXPOSE 80
 
 
 #HBase is configured to store data in /data/hbase, vol-mount it to persist your data.
