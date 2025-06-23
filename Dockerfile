@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.12.1
 
 ENV TINI_VERSION v0.18.0
 ENV TSDB_VERSION 2.4.0
@@ -28,7 +28,7 @@ WORKDIR /opt/opentsdb/
 # Add build deps, build opentsdb, and clean up afterwards.
 RUN set -ex && apk add --virtual builddeps ${BUILD_PACKAGES}
 
-RUN ln -sf /usr/bin/python3 /usr/bin/python
+RUN ln -s /usr/bin/python3 /usr/bin/python
 
 RUN wget --no-check-certificate \
     -O v${TSDB_VERSION}.zip \
@@ -88,6 +88,7 @@ RUN for i in /opt/bin/start_hbase.sh /opt/bin/start_opentsdb.sh /opt/bin/create_
 
 RUN echo "export HBASE_OPTS=\"${HBASE_OPTS}\"" >> /opt/hbase/conf/hbase-env.sh
 
+RUN mkdir -p /run/nginx
 
 #4242 is tsdb, rest are hbase ports
 #EXPOSE 60000 60010 60030 4242 16010 16070
